@@ -8,6 +8,9 @@ import App from './App.vue'
 // 引入路由文件
 import router from './router'
 
+//引入公用样式
+import '@/styles/common.less'
+
 // 注册elementui
 Vue.use(ElementUI);
 // 阻止生产提示

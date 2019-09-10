@@ -1,0 +1,8 @@
+{
+    "editor.parameterHints": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    }
+}
