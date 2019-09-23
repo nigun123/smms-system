@@ -31,16 +31,17 @@
     </div>
 </template>
 <script>
+import qs from 'qs';
 export default {
     data() {
-        const checkUN = (str)=>{
-            var reg =/^[a-zA-Z0-9_-]{4,16}$/;
-            if(reg.test(str)){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        // const checkUN = (str)=>{
+        //     var reg =/^[a-zA-Z0-9_-]{4,16}$/;
+        //     if(reg.test(str)){
+        //         return true;
+        //     }else{
+        //         return false;
+        //     }
+        // }
         
         //判断密码只能输入数字及字母
         const checkSpecifiKey = (str)=>{
@@ -57,18 +58,21 @@ export default {
       var checkUname = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入用户名'));
-        }else if(!checkUN(value)){
-         callback(new Error('请输入4-16位（字母，数字，下划线，减号）'));
         }
+        // else if(!checkUN(value)){
+        //  callback(new Error('请输入4-16位（字母，数字，下划线，减号）'));
+        // }
          callback();        
       };
       //验证密码
       var getPwd = (rule, value, callback) => {
         if (value === '') {
             callback(new Error('请输入密码'));
-        }else if(!checkSpecifiKey(value)){
-            callback(new Error('密码必须由 6-16位字母、数字组成'));
-        }else {
+        }
+        // else if(!checkSpecifiKey(value)){
+        //     callback(new Error('密码必须由 6-16位字母、数字组成'));
+        // }
+        else {
             //若确认密码框不为空 触发确认密码函数 
           if (this.loginForm.checkpwd !== '') {
             this.$refs.loginForm.validateField('checkpwd');
@@ -97,7 +101,7 @@ export default {
         rules: {
             //用户
           username: [
-              //自定义验证函数
+              //validator自定义验证函数
             {required:true, validator: checkUname, trigger: 'blur' }
           ],
            //输入密码
@@ -117,20 +121,32 @@ export default {
         // 获取整个表单组件  调用验证方法
         this.$refs[formName].validate((valid) => {
           if (valid) {  //如果所有验证通过valid为true
-           
-            
             //将收集的用户名密码 一起发送给后端
             let params = {
               username:this.loginForm.username,
               pwd :this.loginForm.pwd,
             }
-
             //发送请求axios   判断用户是否存在及密码正确性
-
-
-            alert('登录成功!');
-            //使用路由router跳转至后端主页面
-            this.$router.push('/index')
+            this.axios.post('http://127.0.0.1:666/login',qs.stringify(params))
+            .then(response =>{
+              let {res_code,msg} = response.data;
+                if(res_code == 1){
+                  this.$message({
+                    message: msg,
+                    type: 'success'
+                  });
+                    //使用路由router跳转至后端主页面
+                    this.$router.push('/index')
+                }else if(res_code == 1){
+                    this.$message.error(msg);
+                }else{
+                  this.$message.error(msg);
+                }
+                
+            })
+            .catch(err =>{
+                console.log(err);
+            })
 
           } else {//失败时valid为false
             alert('前端验证失败');

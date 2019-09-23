@@ -15,8 +15,6 @@
         <el-submenu index="1">
             <template slot="title"><i class="el-icon-setting"></i>系统管理</template>                        
                 <el-menu-item index="/index">系统信息</el-menu-item>
-                <el-menu-item index="/systemconfiguration">系统配置</el-menu-item>                        
-                <el-menu-item index="/rightsmanager">权限管理</el-menu-item>  
             </el-submenu>
             <el-submenu index="2">
             <template slot="title"><i class="el-icon-s-custom"></i>账号管理</template>                        

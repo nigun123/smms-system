@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 //注册路由（使用路由）
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -47,11 +47,6 @@ export default new Router({
               component : () => import('./views/PwdModify/pwdmodify.vue')
             },
             {
-              path:'/rightsmanager',
-              name:'rightsmanager',
-              component : () => import('./views/RightsManager/rightsmanager.vue')
-            },
-            {
               path:'/salesstatistics',
               name:'salesstatistics',
               component : () => import('./views/SalesStatistics/salesstatistics.vue')
@@ -61,12 +56,6 @@ export default new Router({
               name:'stockstatistics',
               component : () => import('./views/StockStatistics/stockstatistics.vue')
             },
-            {
-              path:'/systemconfiguration',
-              name:'systemconfiguration',
-              component : () => import('./views/SystemConfiguration/systemconfiguration.vue')
-            },
-
       ]      
     }   
   ]

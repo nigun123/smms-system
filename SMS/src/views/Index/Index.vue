@@ -50,10 +50,13 @@ export default {
         }
          //右侧上下
         .el-header, .el-footer {
-            background-color: #B3C0D1;
+            background-color: #E9EEF3;
             color: #333;
             text-align: center;
             line-height: 60px;
+        }
+        .el-header{
+            border-bottom: 1px solid #2d3a4b;
         }
         //左侧内容
         .el-aside {

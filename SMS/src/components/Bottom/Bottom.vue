@@ -14,8 +14,9 @@ export default {
 </script>
 <style lang="less">
     .bottom{
+        width:100%;
         color:#2d3a4b;
         float:left;
-
+        border-top: 1px solid #2d3a4b;
     }
 </style>
