@@ -126,20 +126,21 @@ export default {
       },
       handleSizeChange(val) { // 设置每页显示数据条数时触发
         this.pageSize = val;
-        console.log(`每页 ${this.pageSize} 条`);
+        // console.log(`每页 ${this.pageSize} 条`);
         this.getAccountByPage();
       },
       handleCurrentChange(val) {// 设置显示第几页时触发
         this.currentPage = val;
-        console.log(`当前页: ${this.currentPage}`);
+        // console.log(`当前页: ${this.currentPage}`);
         this.getAccountByPage();
       },
       //根据页码及每页显示条数获取当前页码的数据进行加载
       getAccountByPage(){
         //获取pageSize currentPage
         let pageSize = this.pageSize;
-        let currentPage = this.currentPage;        
-        if(currentPage)
+        let currentPage = this.currentPage; 
+        console.log("pageSize"+pageSize,"currentPage"+currentPage);   
+        
         //发送请求获取数据
         this.axios.get('http://127.0.0.1:666/account/getAccountByPage',{
           params:{
@@ -149,8 +150,9 @@ export default {
         })
         .then(response=>{ 
           //判断当前也是否为第一页 或者 当前页是否无数据(显示前一页数据) 
-          if(response.data.length == 0 &&  this.currentPage != 1){
+          if(response.data.data.length == 0 &&  this.currentPage != 1){
              this.currentPage -= 1;
+             console.log("pageSize:"+pageSize,"currentPage:"+currentPage);
              this. getAccountByPage();
           }
           this.total = response.data.total;
@@ -237,7 +239,7 @@ export default {
                 message: msg,
                 type: 'success'
             });
-            this.getAllAccount();
+            this. getAccountByPage();
           }else{
               this.$message.error(msg);
           }
@@ -274,7 +276,7 @@ export default {
                 message: msg,
                 type: 'success'
             });
-            this.getAllAccount();
+            this.getAccountByPage();
           }else{
               this.$message.error(msg);
           }
@@ -282,23 +284,7 @@ export default {
         .catch(err=>{
           console.log("出错了",err)
           })
-        // //删除用户get方式
-        // this.axios.get(`http://127.0.0.1:666/account/delAccount?id=${id}`)
-        // .then(response=>{
-        //   let {res_code,msg} = response.data;
-        //       if(res_code == 1){
-        //         this.$message({
-        //             message: msg,
-        //             type: 'success'
-        //         });
-        //         this.getAllAccount();
-        //       }else{
-        //           this.$message.error(msg);
-        //       }
-        // })
-        // .catch(err=>{
-        //     console.log("出错了",err)
-        // })
+       
       }
     },
     filters:{//过滤器

@@ -129,20 +129,21 @@ export default {
             //发送请求axios   判断用户是否存在及密码正确性
             this.axios.post('http://127.0.0.1:666/login',qs.stringify(params))
             .then(response =>{
-              let {res_code,msg} = response.data;
+              let {res_code,msg,token,username} = response.data;
+              window.localStorage.setItem('token',token); //将token存入浏览器本地存储
+              window.localStorage.setItem('username',username); //将token存入浏览器本地存储
                 if(res_code == 1){
                   this.$message({
                     message: msg,
                     type: 'success'
                   });
-                    //使用路由router跳转至后端主页面
-                    this.$router.push('/index')
-                }else if(res_code == 1){
-                    this.$message.error(msg);
+                  setTimeout(()=>{
+                      //使用路由router跳转至后端主页面
+                      this.$router.push('/index')
+                  },1000)
                 }else{
                   this.$message.error(msg);
                 }
-                
             })
             .catch(err =>{
                 console.log(err);

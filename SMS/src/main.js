@@ -11,7 +11,10 @@ import router from './router'
 import axios from 'axios'
 
 //引入公用样式
-import '@/styles/common.less'
+import '@/styles/common.less';
+
+//引入解构组件Message
+import {Message} from 'element-ui';
 
 // 注册elementui
 Vue.use(ElementUI);
@@ -19,6 +22,21 @@ Vue.use(ElementUI);
 //把axios挂在vue的原型上
 Vue.prototype.axios = axios;
 //console.log(axios)
+
+//全局路由守卫beforeEach
+router.beforeEach((to, from, next) => {
+  const token = window.localStorage.getItem('token');//获取token
+  if(token){//存在 直接放行
+    next();
+  }else{//不存在 判断是否是登录页
+    if (to.path == '/login') {
+      next();
+    } else {
+      Message.error('请先登录');
+      return next({"path":"/login"});//跳转至登录页
+    }
+  }
+})
 
 // 阻止生产提示
 Vue.config.productionTip = false

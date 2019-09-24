@@ -29,7 +29,6 @@
                 <!-- 重置及登录按钮 -->
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('addaccountFrom')">添加</el-button>
-                    <el-b
                     <el-button @click="resetForm('addaccountFrom')">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -144,6 +143,10 @@ export default {
                     message: response.data.msg,
                     type: 'success'
                   });
+                  this.username= '';
+                  this.pwd= '';
+                  this.checkpwd= '';
+                  this.usergroup= '';
                 }else{
                   this.$message.error(response.data.msg);
                 }
