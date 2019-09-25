@@ -50,10 +50,10 @@ export default {
                     username:window.localStorage.getItem('username')
                 }
                 //向后台发送axios请求判断密码是否正确
-                this.axios.get('http://127.0.0.1:666/account/checkOldpwd',{params})
+                this.request.get('/account/checkOldpwd',params)
                 .then(response=>{
                     // res.send({"res_code":0,"msg":"旧密码不正确"})
-                    let {res_code,msg} = response.data;
+                    let {res_code,msg} = response;
                     if(res_code == 1){
                        callback();//成功的回调
                     }else{
@@ -118,12 +118,12 @@ export default {
                         username:window.localStorage.getItem('username'),
                         newpwd:this.pwdmodifyFrom.oldpwd
                     }   
-                    this.axios.get('http://127.0.0.1:666/account/pwdModify',{params})
+                    this.request.get('/account/pwdModify',params)
                     .then(response=>{
-                        let {res_code,msg} = response.data;
+                        let {res_code,msg} = response;
                         if(res_code == 1){
                           this.$message({
-                                message: response.data.msg,
+                                message: msg,
                                 type: 'success'
                             });                            
                             setTimeout(()=>{//清除浏览器token和username 跳转至登录界面

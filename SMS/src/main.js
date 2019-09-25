@@ -19,8 +19,11 @@ import {Message} from 'element-ui';
 // 注册elementui
 Vue.use(ElementUI);
 
+import request from '@/api/requset'; //先引入request.js
+Vue.prototype.request = request;//把request挂在vue的原型上
+
 //把axios挂在vue的原型上
-Vue.prototype.axios = axios;
+// Vue.prototype.axios = axios;
 //console.log(axios)
 
 //全局路由守卫beforeEach

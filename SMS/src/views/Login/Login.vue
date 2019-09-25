@@ -127,9 +127,11 @@ export default {
               pwd :this.loginForm.pwd,
             }
             //发送请求axios   判断用户是否存在及密码正确性
-            this.axios.post('http://127.0.0.1:666/login',qs.stringify(params))
+            // this.axios.post('http://127.0.0.1:666/login',qs.stringify(params))
+            this.request.post('/login',params)
             .then(response =>{
-              let {res_code,msg,token,username} = response.data;
+              // let {res_code,msg,token,username} = response.data;//axios
+              let {res_code,msg,token,username} = response;//reques
               window.localStorage.setItem('token',token); //将token存入浏览器本地存储
               window.localStorage.setItem('username',username); //将token存入浏览器本地存储
                 if(res_code == 1){

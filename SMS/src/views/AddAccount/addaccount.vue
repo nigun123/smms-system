@@ -122,7 +122,7 @@ export default {
       };
     },
     methods: {
-        // 登录
+        // 添加账户
       submitForm(formName) {
         // 获取整个表单组件  调用验证方法
         this.$refs[formName].validate((valid) => {
@@ -134,21 +134,24 @@ export default {
               usergroup:this.addaccountFrom.usergroup,
             }
             //发送请求axios   
-            this.axios.post('http://127.0.0.1:666/account/addAccount',qs.stringify(params))
+            // this.axios.post('/account/addAccount',qs.stringify(params))//axios
+            this.request.post('/account/addAccount',params)//request
             .then(response =>{
-              const result = response.data.res_code;
+              // const result = response.data.res_code;//axios
+              const result = response.res_code;//request
                 // console.log(response)
                 if(result == 1){
                   this.$message({
-                    message: response.data.msg,
+                    // message: response.data.msg,//axios
+                    message: response.msg,//request
                     type: 'success'
                   });
-                  this.username= '';
-                  this.pwd= '';
-                  this.checkpwd= '';
-                  this.usergroup= '';
+                  this.addaccountFrom.username= '';
+                  this.addaccountFrom.pwd= '';
+                  this.addaccountFrom.checkpwd= '';
+                  this.addaccountFrom.usergroup= '';
                 }else{
-                  this.$message.error(response.data.msg);
+                  this.$message.error(response.msg);
                 }
                 
             })

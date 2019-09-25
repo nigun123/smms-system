@@ -113,17 +113,6 @@ export default {
        this.getAccountByPage();
     },
     methods: {//方法
-     //请求所有账户的方法
-      getAllAccount(){
-          //请求用户列表
-          this.axios.get('http://127.0.0.1:666/account/getAccount')
-          .then(response=>{
-            this.tableData = response.data;
-          })
-          .catch(err=>{
-              console.log(err)
-          })
-      },
       handleSizeChange(val) { // 设置每页显示数据条数时触发
         this.pageSize = val;
         // console.log(`每页 ${this.pageSize} 条`);
@@ -139,24 +128,25 @@ export default {
         //获取pageSize currentPage
         let pageSize = this.pageSize;
         let currentPage = this.currentPage; 
-        console.log("pageSize"+pageSize,"currentPage"+currentPage);   
-        
-        //发送请求获取数据
-        this.axios.get('http://127.0.0.1:666/account/getAccountByPage',{
-          params:{
+        console.log(pageSize,currentPage);   
+        let params = {
             pageSize,
             currentPage
-          }
-        })
+        }
+        //发送请求获取数据
+        this.request.get('/account/getAccountByPage',params)
         .then(response=>{ 
+          console.log(response.data)
           //判断当前也是否为第一页 或者 当前页是否无数据(显示前一页数据) 
-          if(response.data.data.length == 0 &&  this.currentPage != 1){
+          if(response.data.length == 0 &&  this.currentPage != 1){
              this.currentPage -= 1;
              console.log("pageSize:"+pageSize,"currentPage:"+currentPage);
              this. getAccountByPage();
+          }else{
+            this.total = response.total;
+            this.tableData = response.data;
           }
-          this.total = response.data.total;
-          this.tableData = response.data.data;
+          
         })
         .catch(err=>{
           console.log(err);
@@ -189,13 +179,9 @@ export default {
          let selectUid = this.multipleSelection.map(obj =>obj.id);
         console.log(selectUid);
         //给后端发axios请求 id作为参数
-        this.axios.get(`http://127.0.0.1:666/account/batchDelete`,{
-          params:{
-            selectUid
-          }
-        })
+        this.request.get(`/account/batchDelete`,{selectUid})
         .then(response=>{
-          let {res_code,msg} = response.data;
+          let {res_code,msg} = response;
           if(res_code == 1){
             this.$message({
                 message: msg,
@@ -214,10 +200,10 @@ export default {
         this.editUserId = id;
         this.flag = true; //打开弹出框
         //发送axios 获取对应用户的数据资料 getSignAccount 并填入弹出框
-        this.axios.get(`http://127.0.0.1:666/account/getSignAccount?uid=${this.editUserId}`)
+        this.request.get(`/account/getSignAccount?`,{uid:this.editUserId })
         .then(response=>{;
-            this.editForm.username = response.data[0].username;
-            this.editForm.usergroup = response.data[0].usergroup;
+            this.editForm.username = response[0].username;
+            this.editForm.usergroup = response[0].usergroup;
         })
         .catch(err=>{
           console.log(err);
@@ -231,9 +217,9 @@ export default {
           uid: this.editUserId,
         }
         //发送axios 修改对应用户的数据资料 editAccount 
-        this.axios.post('http://127.0.0.1:666/account/editAccount',qs.stringify(params))
+        this.request.post('http://127.0.0.1:666/account/editAccount',params)
         .then(response => {
-          let {res_code,msg} = response.data;
+          let {res_code,msg} = response;
           if(res_code == 1){
             this.$message({
                 message: msg,
@@ -266,11 +252,11 @@ export default {
         //axios 发送id给后台
         console.log(id);
         //删除用户post方式
-        let params = { id:id,}
+        let params = { id}
         //发送请求axios   判断用户是否存在及密码正确性
-        this.axios.post('http://127.0.0.1:666/account/delAccount',qs.stringify(params))
+        this.request.post('http://127.0.0.1:666/account/delAccount',params)
         .then(response =>{
-          let {res_code,msg} = response.data;
+          let {res_code,msg} = response;
           if(res_code == 1){
             this.$message({
                 message: msg,
