@@ -36,7 +36,7 @@
     </div>
 </template>
 <script>
-import  qs from 'qs'
+// import  qs from 'qs'
 export default {
  data() {
         const checkUN = (str)=>{
@@ -146,10 +146,7 @@ export default {
                     message: response.msg,//request
                     type: 'success'
                   });
-                  this.addaccountFrom.username= '';
-                  this.addaccountFrom.pwd= '';
-                  this.addaccountFrom.checkpwd= '';
-                  this.addaccountFrom.usergroup= '';
+                  this.$router.push('/accountmanager');
                 }else{
                   this.$message.error(response.msg);
                 }

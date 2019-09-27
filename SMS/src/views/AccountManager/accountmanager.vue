@@ -40,13 +40,12 @@
                 <!-- 操作 -->
                 <el-table-column   label="操作">
                     <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.row.id)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="open(scope.row.id)">删除</el-button>
+                        <el-button size="mini"  type="primary"  @click="handleEdit(scope.row.id)">
+                            <i class="el-icon-edit"></i>
+                        </el-button>
+                        <el-button size="mini" type="danger" @click="open(scope.row.id)">
+                            <i class="el-icon-delete"></i>
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -275,7 +274,7 @@ export default {
     },
     filters:{//过滤器
         filterCtime(ctime){
-            return moment(ctime).format('YYYY-MM-DD HH:mm:ss');
+            return moment(ctime).format('YYYY-MM-DD');
         }
     }
 }
