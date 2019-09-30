@@ -33,16 +33,7 @@
 <script>
 import qs from 'qs';
 export default {
-    data() {
-        // const checkUN = (str)=>{
-        //     var reg =/^[a-zA-Z0-9_-]{4,16}$/;
-        //     if(reg.test(str)){
-        //         return true;
-        //     }else{
-        //         return false;
-        //     }
-        // }
-        
+    data() {        
         //判断密码只能输入数字及字母
         const checkSpecifiKey = (str)=>{
             var reg = /^[A-Za-z0-9]{6,16}$/;      
@@ -51,7 +42,6 @@ export default {
             }else{
                 return false;
             }
-
         }
 
         //用户名
@@ -59,9 +49,7 @@ export default {
         if (value === '') {
           callback(new Error('请输入用户名'));
         }
-        // else if(!checkUN(value)){
-        //  callback(new Error('请输入4-16位（字母，数字，下划线，减号）'));
-        // }
+       
          callback();        
       };
       //验证密码
@@ -69,9 +57,7 @@ export default {
         if (value === '') {
             callback(new Error('请输入密码'));
         }
-        // else if(!checkSpecifiKey(value)){
-        //     callback(new Error('密码必须由 6-16位字母、数字组成'));
-        // }
+       
         else {
             //若确认密码框不为空 触发确认密码函数 
           if (this.loginForm.checkpwd !== '') {
@@ -131,9 +117,10 @@ export default {
             this.request.post('/login',params)
             .then(response =>{
               // let {res_code,msg,token,username} = response.data;//axios
-              let {res_code,msg,token,username} = response;//reques
+              let {res_code,msg,token,username,roles} = response;//reques
               window.localStorage.setItem('token',token); //将token存入浏览器本地存储
               window.localStorage.setItem('username',username); //将token存入浏览器本地存储
+              window.localStorage.setItem('roles',roles); //将token存入浏览器本地存储
                 if(res_code == 1){
                   this.$message({
                     message: msg,

@@ -38,11 +38,14 @@ export default {
         handcommand(command){
             if(command ==="logout"){
                 window.localStorage.removeItem('token');
+                window.localStorage.removeItem('roles');
                  this.$message({
                     message: "退出成功",
                     type: 'success'
                   });
                 this.$router.push('/login');
+            }else if( command ==="personInfo"){
+                this.$router.push('/personInfo');
             }
         }
     },

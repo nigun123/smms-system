@@ -12,33 +12,124 @@
         active-text-color="rgb(64,158,255)"  
         :default-active="this.$route.path"                  
         router>
-        <el-submenu index="1">
-            <template slot="title"><i class="el-icon-setting"></i>系统管理</template>                        
-                <el-menu-item index="/index">系统信息</el-menu-item>
-            </el-submenu>
-            <el-submenu index="2">
-            <template slot="title"><i class="el-icon-s-custom"></i>账号管理</template>                        
-                <el-menu-item index="/accountmanager">账号管理</el-menu-item>
-                <el-menu-item index="/addaccount">添加账号</el-menu-item>                        
-                <el-menu-item index="/pwdmodify">密码修改</el-menu-item>  
-            </el-submenu>
-            <el-submenu index="3">
-            <template slot="title"><i class="el-icon-goods"></i>商品管理</template>                        
-                <el-menu-item index="/goodsmanager">商品管理</el-menu-item>
-                <el-menu-item index="/addgoods">添加商品</el-menu-item>    
-            </el-submenu>
-            <el-submenu index="4">
-            <template slot="title"><i class="el-icon-date"></i>统计管理</template>                        
-                <el-menu-item index="/salesstatistics">销售统计</el-menu-item>
-                <el-menu-item index="/stockstatistics">进货统计</el-menu-item>    
-            </el-submenu>
-    </el-menu>
-    
+        <!--  : 表示动态获取 -->
+        <el-submenu :index="(index + 1) + ''"  v-for="(item, index) in userNavMenu" :key="index">
+            <template slot="title"><i :class="item.icon"></i>{{ item.navTile }}</template>                        
+                <el-menu-item  
+                    v-if="item.childern  && item.childern.length"
+                    v-for="(child, index) in item.childern"
+                    :key="index"
+                    :index="child.path">
+                        {{child.subTitle}}
+                </el-menu-item>
+        </el-submenu>
+
+    </el-menu>    
   </div class="nav">
 </template>
 <script>
 export default {
-    
+    data() {
+        return {
+            navMenu:[               
+                {
+                    navTile:'系统管理',
+                    icon:'el-icon-setting',
+                    roles:['admin','editor'],
+                    childern:[
+                        {
+                            subTitle:'系统信息',
+                            path:'/index'
+                        },
+                    ]
+                },
+                {
+                    navTile:'个人信息',
+                    icon:'el-icon-user-solid',
+                    roles:['admin','editor'],
+                    childern:[
+                        {
+                            subTitle:'个人信息',
+                            path:'/personInfo'
+                        },
+                    ]
+                },
+                {
+                    navTile:'账号管理',
+                    icon:'el-icon-s-custom',
+                    roles:['admin'],
+                    childern:[
+                        {
+                            subTitle:'账号管理',
+                            path:'/accountmanager'
+                        },
+                        {
+                            subTitle:'添加账号',
+                            path:'/addaccount'
+                        },
+                        {
+                            subTitle:'密码修改',
+                            path:'/pwdmodify'
+                        },
+                    ]
+                },
+                {
+                    navTile:'商品管理',
+                    icon:'el-icon-goods',
+                    roles:['admin','editor'],
+                    childern:[
+                        {
+                            subTitle:'商品管理',
+                            path:'/goodsmanager'
+                        },
+                        {
+                            subTitle:'添加商品',
+                            path:'/addgoods'
+                        },
+                    ]
+                },
+                {
+                    navTile:'统计管理',
+                    icon:'el-icon-date',
+                    roles:['admin'],
+                    childern:[
+                        {
+                            subTitle:'销售统计',
+                            path:'/salesstatistics'
+                        },
+                        {
+                            subTitle:'进货统计',
+                            path:'/stockstatistics'
+                        },
+                    ]
+                },
+            ],
+            userNavMenu:[]
+        }
+    },
+    //生命周期created
+    created() {
+        /** 过滤导航菜单  */
+        this.filterNav()
+    },
+    methods: {
+        filterNav(){
+            //从本地获取roles
+            let roles = window.localStorage.getItem('roles');
+            console.log(roles);
+            //临时数组
+            let tempMenu = [];
+            //循环NavMenu
+            this.navMenu.forEach( navItem =>{
+                //判断navItem.roles 是否含有roles
+               if(navItem.roles.includes(roles)){
+                   tempMenu.push(navItem)
+               }
+            })
+            //赋值
+            this.userNavMenu = tempMenu;
+        }
+    },
 }
 </script>
 <style lang="less">

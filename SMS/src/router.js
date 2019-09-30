@@ -22,6 +22,11 @@ export default new Router({
               component : () => import('./views/Home/home.vue')
             },
             {
+              path:'/personInfo',
+              name:'personInfo',
+              component : () => import('./views/PersonInfo/PersonInfo.vue')
+            },
+            {
               path:'/accountmanager',
               name:'accountmanager',
               component : () => import('./views/AccountManager/accountmanager.vue')
